@@ -1,0 +1,36 @@
+$ docker run --sig-proxy=false -it ubuntu  sh -c 'echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website;'
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+5b7339215d1d: Pull complete
+14ca88e9f672: Pull complete
+a31c3b1caad4: Pull complete
+b054a26005b7: Pull complete
+Digest: sha256:9b1702dcfe32c873a770a32cfd306dd7fc1c4fd134adfb783db68defc8894b3c
+Status: Downloaded newer image for ubuntu:latest
+Input website:
+helsinki.fi
+Searching..
+sh: 1: curl: not found
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS                        PORTS               NAMES
+0f905b4af59f        ubuntu              "sh -c 'echo \"Input …"   25 seconds ago      Exited (127) 11 seconds ago                       stupefied_chaplygin
+$ docker start 0f
+0f
+$ docker ps -a
+CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS              PORTS               NAMES
+0f905b4af59f        ubuntu              "sh -c 'echo \"Input …"   41 seconds ago      Up 2 seconds                            stupefied_chaplygin
+$ docker exec 0f9 apt-get update
+$ docker exec 0f9 apt-get install -y curl wget
+$ docker exec -it 0f9 bash
+root@0f905b4af59f:/# sh -c 'echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website;'
+Input website:
+helsinki.fi
+Searching..
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body></html>
+root@0f905b4af59f:/#
